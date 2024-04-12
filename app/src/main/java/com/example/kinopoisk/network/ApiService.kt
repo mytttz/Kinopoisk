@@ -49,6 +49,11 @@ interface ApiService {
         @Query("token") apiKey: String = "WF76VQQ-HQB4P5G-JFJH8DF-CRKDP1M"
     ): Response<PosterResponse>
 
+    suspend fun getTune(
+        @Query("") url: String,
+        @Query("token") apiKey: String = "WF76VQQ-HQB4P5G-JFJH8DF-CRKDP1M"
+    ): Response<MovieResponse>
+
     companion object {
         fun create(): ApiService {
             return Retrofit.Builder()

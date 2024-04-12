@@ -27,4 +27,7 @@ class MovieRepository(private val apiService: ApiService) {
     suspend fun searchMovies(page: Int, query: String): Response<MovieResponse> {
         return apiService.searchMovies(page, query = query)
     }
+    suspend fun getTune(url: String): Response<MovieResponse> {
+        return apiService.getTune(url)
+    }
 }

@@ -1,0 +1,152 @@
+<!-- bottom_sheet_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <!-- По году -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="По году"
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/yearsSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="1895"
+        android:valueTo="2024"
+        app:values="@array/years"
+        android:stepSize="1"/>
+
+    <!-- По стране -->
+    <TextView
+        android:id="@+id/country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="По стране"
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+
+    <!-- По возрастному рейтингу -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="По возрастному рейтингу"
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <Spinner
+        android:id="@+id/ageRatingSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"/>
+
+    <!-- По рейтингу -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="По рейтингу"
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <!-- Slider для выбора рейтинга ОТ и ДО -->
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/ratingSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0"
+        android:valueTo="10"
+        app:values="@array/rating"
+        android:stepSize="1"/>
+
+    <!-- По жанру -->
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="По жанру"
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <!-- Первая сегментированная кнопка для выбора типа контента -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/contentTypeButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/movieButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Фильм"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/seriesButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Сериал"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/allButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Всё"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <!-- Вторая сегментированная кнопка для выбора сортировки -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/sortByButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ratingButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="По рейтингу"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/popularityButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Популярности"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dateButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="По дате"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <!-- Кнопка применить фильтры -->
+    <Button
+        android:id="@+id/applyFiltersButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Применить фильтры"/>
+
+</LinearLayout>

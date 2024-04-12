@@ -48,3 +48,12 @@ data class Person(
     val description: String,
     val enProfession: String
 )
+
+data class Tune(
+    val type: String,
+    val year: String,
+    val sortField: String,
+    val ratingKp: String,
+    val genres: List<Genres>,
+    val countries: List<Countries>
+)

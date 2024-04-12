@@ -23,7 +23,7 @@ class MovieSearchAdapter(
     private val context: Context,
     private val viewModel: MovieListViewModel
 ) :
-    PagingDataAdapter<Movie, MovieSearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
+    ListAdapter<Movie, MovieSearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val movieName: TextView = itemView.findViewById(R.id.movieName)
@@ -41,7 +41,6 @@ class MovieSearchAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        Log.i("ee", "asdad")
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.movie_list_item, parent, false)
         return MovieViewHolder(itemView)
