@@ -18,6 +18,13 @@ interface ApiService {
         @Query("limit") limit: Int = 10,
         @Query("token") apiKey: String = "WF76VQQ-HQB4P5G-JFJH8DF-CRKDP1M"
     ): Response<MovieResponse>
+    @GET("v1.4/movie/search")
+    suspend fun searchMovies(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int = 10,
+        @Query("query") query: String,
+        @Query("token") apiKey: String = "WF76VQQ-HQB4P5G-JFJH8DF-CRKDP1M"
+    ): Response<MovieResponse>
 
     @GET("v1.4/movie/{id}")
     suspend fun getMovie(

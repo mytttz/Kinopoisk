@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MovieListViewModel(
 ) : ViewModel() {
 
-    private val movieRepository = MovieRepository(ApiService.create()) // Создаем экземпляр MovieRepository
+    private val movieRepository = MovieRepository(ApiService.create())
 
 
     val movies: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = PAGE_SIZE)) {
@@ -47,6 +47,21 @@ class MovieListViewModel(
         viewModelScope.launch {
             try {
                 val response = movieRepository.getMovies(page)
+                if (response.isSuccessful) {
+                } else {
+                    _error.value = "Failed to fetch movies: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Error occurred: ${e.message}"
+            }
+        }
+    }
+
+    fun fetchSearchMovies(page: Int, query:String) {
+        viewModelScope.launch {
+            try {
+                val response = movieRepository.searchMovies(page, query)
+                Log.i("response", response.body().toString())
                 if (response.isSuccessful) {
                 } else {
                     _error.value = "Failed to fetch movies: ${response.message()}"

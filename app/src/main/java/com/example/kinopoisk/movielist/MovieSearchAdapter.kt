@@ -19,11 +19,11 @@ import com.example.kinopoisk.moviescreen.MovieScreenActivity
 import com.squareup.picasso.Picasso
 
 
-class MovieAdapter(
+class MovieSearchAdapter(
     private val context: Context,
     private val viewModel: MovieListViewModel
 ) :
-    PagingDataAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffCallback()) {
+    PagingDataAdapter<Movie, MovieSearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val movieName: TextView = itemView.findViewById(R.id.movieName)

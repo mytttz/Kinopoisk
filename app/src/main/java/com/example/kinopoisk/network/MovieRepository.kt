@@ -24,4 +24,7 @@ class MovieRepository(private val apiService: ApiService) {
     suspend fun getPosters(page: Int, movieId: Int): Response<PosterResponse> {
         return apiService.getPosters(page, movieId = movieId)
     }
+    suspend fun searchMovies(page: Int, query: String): Response<MovieResponse> {
+        return apiService.searchMovies(page, query = query)
+    }
 }
