@@ -21,7 +21,7 @@ class ReviewAdapter(
 //    private val context: Context,
 //    private val viewModel: MovieListViewModel
 ) :
-    ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
+    PagingDataAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
 
     inner class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val reviewType: ImageView = itemView.findViewById(R.id.reviewType)
@@ -55,7 +55,7 @@ class ReviewAdapter(
             }
             else -> holder.titleReview.text = getItem(position)?.title
         }
-        when (getItem(position).type) {
+        when (getItem(position)?.type) {
             "Позитивный" -> holder.reviewType.setBackgroundColor(Color.parseColor("#03fc0f"))
             "Нейтральный" -> holder.reviewType.setBackgroundColor(Color.parseColor("#bdbfbe"))
             "Негативный" -> holder.reviewType.setBackgroundColor(Color.parseColor("#fc0303"))

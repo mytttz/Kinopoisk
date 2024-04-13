@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,7 @@ import com.example.kinopoisk.R
 
 class PosterAdapter(
 ) :
-    ListAdapter<Poster, PosterAdapter.PosterViewHolder>(PosterDiffCallback()) {
+    PagingDataAdapter<Poster, PosterAdapter.PosterViewHolder>(PosterDiffCallback()) {
 
     inner class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val poster: ImageView = itemView.findViewById(R.id.poster)

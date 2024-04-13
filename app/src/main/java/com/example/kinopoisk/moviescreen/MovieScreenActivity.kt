@@ -1,16 +1,22 @@
 package com.example.kinopoisk.moviescreen
 
+import MovieScreenViewModel
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kinopoisk.MovieListViewModelFactory
 import com.example.kinopoisk.R
 import com.example.kinopoisk.RoundedCornerTransformation
+import com.example.kinopoisk.movielist.MovieListViewModel
+import com.example.kinopoisk.network.ApiService
+import com.example.kinopoisk.network.MovieRepository
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
@@ -27,7 +33,6 @@ class MovieScreenActivity : AppCompatActivity() {
     private lateinit var reviewList: RecyclerView
     private lateinit var carouselPoster: RecyclerView
     private lateinit var actorslist: RecyclerView
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,13 +68,16 @@ class MovieScreenActivity : AppCompatActivity() {
         val intent = intent
         val id = intent.getIntExtra("EXTRA_ID", -1)
         Log.i("id", id.toString())
-        val viewModel = MovieScreenViewModel(id)
+        val viewModel =
+            ViewModelProvider(this, MovieListViewModelFactory(MovieRepository(ApiService.create()), id))
+                .get(MovieScreenViewModel::class.java)
+
+
         toolBar.setNavigationOnClickListener {
             finish()
         }
-        Log.i("person", viewModel.movieItem.value.toString())
-//        Log.i("movie", movie.toString())
-        viewModel.movieItem.observe(this) { movie ->
+        Log.i("person", viewModel.movie.value.toString())
+        viewModel.movie.observe(this) { movie ->
             movieName.text = movie?.name
             movieYear.text = movie?.year
             movieCountry.text = movie?.countries?.joinToString { country -> country.name }
@@ -82,19 +90,20 @@ class MovieScreenActivity : AppCompatActivity() {
                 .placeholder(R.drawable.download_icon) // Заглушка, отображаемая во время загрузки
                 .error(R.drawable.tune_icon) // Заглушка, отображаемая при ошибке загрузки ВРЕМЕННАЯ
                 .into(moviePoster)
-//            Log.i("person", movie?.persons.toString())
-//            Log.i("movie", movie.toString())
+
             val actors = movie.persons.filter { it.enProfession == "actor" }
             adapterPerson.submitList(actors)
         }
-        viewModel.reviewItem.observe(this) { reviewItem ->
-            adapterReview.submitList(reviewItem)
+
+        viewModel.reviews.observe(this) { pagingData ->
+            adapterReview.submitData(lifecycle, pagingData)
         }
 
-        viewModel.posterItem.observe(this) { posterItem ->
-            adapterPoster.submitList(posterItem)
+        viewModel.posters.observe(this) { pagingData ->
+            adapterPoster.submitData(lifecycle, pagingData)
         }
-
+    }
+}
 
 //        lifecycleScope.launchWhenCreated {
 //            viewModel.movie.collectLatest { pagingData ->
@@ -107,8 +116,6 @@ class MovieScreenActivity : AppCompatActivity() {
 //                    movieCountry.text = it.countries.joinToString { country -> country.name }
 //                    movieRating.text = it.rating.kp.toString() // Используйте нужные вам поля объекта Rating
 //                }
-    }
-}
 
 
 //
