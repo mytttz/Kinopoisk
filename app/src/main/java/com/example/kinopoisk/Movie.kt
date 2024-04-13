@@ -54,6 +54,6 @@ data class Tune(
     val year: String,
     val sortField: String,
     val ratingKp: String,
-    val genres: List<Genres>,
-    val countries: List<Countries>
+    val genres: List<String>,
+    val countries: List<String>
 )

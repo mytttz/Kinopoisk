@@ -23,14 +23,16 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
     ): View? {
 
         val arrayType = arguments?.getString("TYPE")
-        val view = inflater.inflate(R.layout.countries_or_genries_filter_bottom_sheet, container, false)
+        val view =
+            inflater.inflate(R.layout.countries_or_genries_filter_bottom_sheet, container, false)
         confirmButton = view.findViewById(R.id.confirmButton)
         countriesRecyclerView = view.findViewById(R.id.countriesRecyclerView)
         searchView = view.findViewById(R.id.searchView)
 
-        if (arrayType == "country"){
-            adapter = CountriesOrGenriesAdapter(resources.getStringArray(R.array.countries).toList())
-        } else if (arrayType == "genre"){
+        if (arrayType == "country") {
+            adapter =
+                CountriesOrGenriesAdapter(resources.getStringArray(R.array.countries).toList())
+        } else if (arrayType == "genre") {
             adapter = CountriesOrGenriesAdapter(resources.getStringArray(R.array.genres).toList())
         }
         countriesRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -38,8 +40,13 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
 
         confirmButton.setOnClickListener {
             val parentFragment = parentFragment as TuneBottomSheet
-            parentFragment.updateCountriesOrGenries(adapter.getSelectedCountriesOrGenries())
-            dismiss()
+            if (arrayType == "country") {
+                parentFragment.updateCountries(adapter.getSelectedCountriesOrGenries())
+                dismiss()
+            } else if (arrayType == "genre") {
+                parentFragment.updateGenries(adapter.getSelectedCountriesOrGenries())
+                dismiss()
+            }
         }
 
         // Инициализация других элементов и логика фильтрации...

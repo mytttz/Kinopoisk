@@ -10,6 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
+import retrofit2.http.Url
 
 interface ApiService {
     @GET("v1.4/movie")
@@ -49,8 +51,11 @@ interface ApiService {
         @Query("token") apiKey: String = "WF76VQQ-HQB4P5G-JFJH8DF-CRKDP1M"
     ): Response<PosterResponse>
 
+    @GET("v1.4/movie")
     suspend fun getTune(
-        @Query("") url: String,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 10,
+        @QueryMap params: Map<String, String>,
         @Query("token") apiKey: String = "WF76VQQ-HQB4P5G-JFJH8DF-CRKDP1M"
     ): Response<MovieResponse>
 

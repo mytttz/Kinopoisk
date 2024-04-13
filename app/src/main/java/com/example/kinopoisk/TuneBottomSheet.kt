@@ -22,6 +22,7 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
     private lateinit var applyFiltersButton: Button
     private lateinit var tuneListener: TuneListener
     private lateinit var selectedCountries: MutableList<String>
+    private lateinit var selectedGenres: MutableList<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +38,9 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
         contentTypeButtonGroup = view.findViewById(R.id.contentTypeButtonGroup)
         sortByButtonGroup = view.findViewById(R.id.sortByButtonGroup)
         applyFiltersButton = view.findViewById(R.id.applyFiltersButton)
+
+
         val args = Bundle()
-
-
         countrySelect.setOnClickListener {
             args.putString("TYPE", "country")
             val countriesFilterBottomSheet = CountriesOrGenriesFilterBottomSheet()
@@ -55,8 +56,8 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
         }
 
         applyFiltersButton.setOnClickListener {
-            val selectedCountries = mutableListOf<Countries>()
-            val selectedGenres = mutableListOf<Genres>()
+            val selectedCountries = mutableListOf<String>()
+            val selectedGenres = mutableListOf<String>()
 
 //            countryCheckBox.setOnCheckedChangeListener { _, isChecked ->
 //                if (isChecked) {
@@ -73,21 +74,21 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
 //                }
 //            }
             // Получение значений из всех виджетов
-            val year = yearsSlider.values.joinToString("-")
+            val year = yearsSlider.values.map { it.toInt() }.joinToString("-")
 //            val country = countrySpinner.selectedItem.toString()
-            val ageRating = ageRatingSpinner.selectedItem.toString()
-            val rating = ratingSlider.values.joinToString("-")
+//            val ageRating = ageRatingSpinner.selectedItem.toString()
+            val rating = ratingSlider.values.map { it.toInt() }.joinToString("-")
             // Получение значений из Segmented Button для типа контента и сортировки
             val contentType = when (contentTypeButtonGroup.checkedButtonId) {
-                R.id.movieButton -> "Фильм"
-                R.id.seriesButton -> "Сериал"
-                R.id.allButton -> "Всё"
+                R.id.movieButton -> "movie"
+                R.id.seriesButton -> "tv-series"
+                R.id.allButton -> ""
                 else -> ""
             }
             val sortBy = when (sortByButtonGroup.checkedButtonId) {
-                R.id.ratingButton -> "По рейтингу"
-                R.id.popularityButton -> "Популярности"
-                R.id.dateButton -> "По дате"
+                R.id.ratingButton -> "rating.kp"
+                R.id.popularityButton -> "votes.kp"
+                R.id.dateButton -> "premiere.world"
                 else -> ""
             }
 
@@ -103,7 +104,9 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
 
             // Теперь у вас есть экземпляр класса Tune, который вы можете использовать по своему усмотрению
             // Например, передать его в какой-то метод или отправить на сервер
-         tuneListener.onTuneCreated(tune)
+            tuneListener.onTuneCreated(tune)
+            dismiss()
+
         }
 
 
@@ -115,8 +118,13 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
         tuneListener = listener
     }
 
-    fun updateCountriesOrGenries(selected: List<String>) {
+    fun updateCountries(selected: List<String>) {
         selectedCountries = selected.toMutableList()
+        // Здесь можно обновить UI на основном экране с учетом выбранных стран
+    }
+
+    fun updateGenries(selected: List<String>) {
+        selectedGenres = selected.toMutableList()
         // Здесь можно обновить UI на основном экране с учетом выбранных стран
     }
 

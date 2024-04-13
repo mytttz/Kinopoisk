@@ -11,16 +11,19 @@ import com.example.kinopoisk.R
 import kotlinx.coroutines.flow.collectLatest
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModel
 import com.example.kinopoisk.Tune
 import com.example.kinopoisk.TuneBottomSheet
+import com.example.kinopoisk.TuneListener
 import com.google.android.material.search.SearchBar
 
-class MovieListActivity : AppCompatActivity() {
+class MovieListActivity : AppCompatActivity(), TuneListener {
 
     private lateinit var filmRecycler: RecyclerView
     private lateinit var searchBarInputText: com.google.android.material.search.SearchView
     private lateinit var movieSearchList: RecyclerView
     private lateinit var searchBar: SearchBar
+    private lateinit var viewModel: MovieListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,16 +33,13 @@ class MovieListActivity : AppCompatActivity() {
         movieSearchList = findViewById(R.id.movieSearchList)
         searchBar = findViewById(R.id.searchBar)
 
-        val viewModel = MovieListViewModel()
+        viewModel = MovieListViewModel()
         val adapter = MovieAdapter(this, viewModel)
         val adapterSearch = MovieSearchAdapter(this, viewModel)
 
-
-
-
-
         searchBar.setOnMenuItemClickListener{
             val modalBottomSheet = TuneBottomSheet()
+            modalBottomSheet.setTuneListener(this)
             modalBottomSheet.show(supportFragmentManager, TuneBottomSheet.TAG)
             return@setOnMenuItemClickListener true
         }
@@ -49,6 +49,10 @@ class MovieListActivity : AppCompatActivity() {
 
         viewModel.movieItem.observe(this) { movieList ->
             adapter.submitList(movieList)
+        }
+
+        viewModel.tuneItem.observe(this) { movieTune ->
+            adapter.submitList(movieTune)
         }
 
 
@@ -75,7 +79,7 @@ class MovieListActivity : AppCompatActivity() {
             }, 1000) // Задержка в 1 секунду
         }
     }
-//    override fun onTuneCreated(tune: Tune) {
-//        // Здесь вы можете использовать объект Tune, созданный в BottomSheet
-//    }
+    override fun onTuneCreated(tune: Tune) {
+        viewModel.fetchTuneMovies(tune)
+    }
 }

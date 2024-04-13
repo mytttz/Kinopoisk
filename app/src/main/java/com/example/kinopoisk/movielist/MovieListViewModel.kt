@@ -52,7 +52,7 @@ class MovieListViewModel(
         viewModelScope.launch {
             try {
                 val responseMovie = movieRepository.getMovies(page)
-//                Log.i("responseMovie", movieRepository.getMovies(page).toString())
+                Log.i("responseMovie", movieRepository.getMovies(page).toString())
                 _movies.value = responseMovie.body()?.docs
                 if (responseMovie.isSuccessful) {
                 } else {
@@ -64,11 +64,11 @@ class MovieListViewModel(
         }
     }
 
-    fun fetchSearchMovies(page: Int, query:String) {
+    fun fetchSearchMovies(page: Int, query: String) {
         viewModelScope.launch {
             try {
                 val responseSearch = movieRepository.searchMovies(page, query)
-                Log.i("response", responseSearch.body().toString())
+                Log.i("fetchSearchMovies", responseSearch.body().toString())
                 if (responseSearch.isSuccessful) {
                     _moviesSearch.value = responseSearch.body()?.docs
 
@@ -83,42 +83,45 @@ class MovieListViewModel(
 
     fun fetchTuneMovies(tune: Tune) {
         viewModelScope.launch {
-            val params = mutableListOf<String>()
+            val params = mutableMapOf<String, String>()
 
-            // Добавляем параметры в список, если они не пустые
-            tune.type.takeIf { it.isNotEmpty() }?.let { params.add("type=$it") }
-            tune.sortField.takeIf { it.isNotEmpty() }?.let { params.add("sortField=$it") }
-            tune.year.takeIf { it.isNotEmpty() }?.let { params.add("year=$it") }
-            tune.ratingKp.takeIf { it.isNotEmpty() }?.let { params.add("rating.kp=$it") }
+// Добавляем параметры в map, если они не пустые
+            tune.type.takeIf { it.isNotEmpty() }?.let { params["type"] = it }
+            tune.sortField.takeIf { it.isNotEmpty() }
+                ?.let { params["sortField"] = it; params["sortType"] = "1" }
+            tune.year.takeIf { it.isNotEmpty() }?.let { params["year"] = it }
+            tune.ratingKp.takeIf { it.isNotEmpty() }?.let { params["rating.kp"] = it }
 
-            // Добавляем жанры, если список не пуст
-            tune.genres.takeIf { it.isNotEmpty() }?.forEach { genre ->
-                params.add("genres.name=${genre.name}")
+// Добавляем жанры, если список не пуст
+            tune.genres.takeIf { it.isNotEmpty() }?.forEachIndexed { index, genre ->
+                params["genres.name$index"] = genre
             }
 
-            // Добавляем страны, если список не пуст
-            tune.countries.takeIf { it.isNotEmpty() }?.forEach { country ->
-                params.add("countries.name=${country.name}")
+// Добавляем страны, если список не пуст
+            tune.countries.takeIf { it.isNotEmpty() }?.forEachIndexed { index, country ->
+                params["countries.name$index"] = country
             }
 
             // Преобразуем список параметров в строку запроса и объединяем с помощью символа "&"
-            val url = params.joinToString("&")
+//            val endtUrl = params.joinToString("&")
+            Log.i("url", params.toString())
+
 
             try {
-                val responseSearch = movieRepository.getTune(url)
-                Log.i("response", responseSearch.body().toString())
-                if (responseSearch.isSuccessful) {
-                    _movies.value = responseSearch.body()?.docs
+                Log.i("getTune", movieRepository.getTune(params).toString())
+                val responseTune = movieRepository.getTune(params)
 
+                if (responseTune.isSuccessful) {
+                    _moviesTune.value = responseTune.body()?.docs
                 } else {
-                    _error.value = "Failed to fetch movies: ${responseSearch.message()}"
+                    _error.value = "Failed to fetch movies: ${responseTune.message()}"
                 }
             } catch (e: Exception) {
+                Log.i("Error", "Error occurred: ${e.message}")
                 _error.value = "Error occurred: ${e.message}"
             }
         }
     }
-
 
 
     fun selectedFilm(context: Context, id: Int?) {
