@@ -6,35 +6,30 @@ import com.example.kinopoisk.Movie
 import retrofit2.HttpException
 import java.io.IOException
 
-class MoviePagingSource(
-    private val movieRepository: MovieRepository,
-    private val pageSize: Int
-) : PagingSource<Int, Movie>() {
+class MoviePagingSource(private val apiService: ApiService) : PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
-        val page = params.key ?: 1
-        return try {
-            val response = movieRepository.getMovies(page)
-            if (response.isSuccessful) {
+        try {
+            val nextPageNumber = params.key ?: 1
+            val response = apiService.getMovies(nextPageNumber)
+
+            return if (response.isSuccessful) {
                 val movies = response.body()?.docs ?: emptyList()
                 LoadResult.Page(
                     data = movies,
-                    prevKey = if (page == 1) null else page - 1,
-                    nextKey = if (movies.isEmpty()) null else page + 1
+                    prevKey = if (nextPageNumber == 1) null else nextPageNumber - 1,
+                    nextKey = if (movies.isEmpty()) null else nextPageNumber + 1
                 )
             } else {
-                LoadResult.Error(IOException("Failed to fetch movies: ${response.message()}"))
+                LoadResult.Error(Exception("Error fetching data"))
             }
-        } catch (e: IOException) {
-            LoadResult.Error(e)
-        } catch (e: HttpException) {
-            LoadResult.Error(e)
+        } catch (e: Exception) {
+            return LoadResult.Error(e)
         }
     }
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-        // This is used for state restoration (e.g., when the user comes back to the app after leaving it).
-        // You can return a key corresponding to the currently loaded page if needed.
         return state.anchorPosition
     }
 }
+

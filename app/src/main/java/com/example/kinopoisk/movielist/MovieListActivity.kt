@@ -12,10 +12,16 @@ import kotlinx.coroutines.flow.collectLatest
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.kinopoisk.MovieListViewModelFactory
 import com.example.kinopoisk.Tune
 import com.example.kinopoisk.TuneBottomSheet
 import com.example.kinopoisk.TuneListener
+import com.example.kinopoisk.network.ApiService
+import com.example.kinopoisk.network.MovieRepository
 import com.google.android.material.search.SearchBar
+import kotlinx.coroutines.launch
+
 
 class MovieListActivity : AppCompatActivity(), TuneListener {
 
@@ -33,7 +39,9 @@ class MovieListActivity : AppCompatActivity(), TuneListener {
         movieSearchList = findViewById(R.id.movieSearchList)
         searchBar = findViewById(R.id.searchBar)
 
-        viewModel = MovieListViewModel()
+        viewModel = ViewModelProvider(this, MovieListViewModelFactory(MovieRepository(ApiService.create())))
+            .get(MovieListViewModel::class.java)
+
         val adapter = MovieAdapter(this, viewModel)
         val adapterSearch = MovieSearchAdapter(this, viewModel)
 
@@ -44,16 +52,23 @@ class MovieListActivity : AppCompatActivity(), TuneListener {
             return@setOnMenuItemClickListener true
         }
 
+        lifecycleScope.launch {
+            viewModel.movies.collectLatest { pagingData ->
+                adapter.submitData(pagingData)
+            }
+        }
+
+
         filmRecycler.adapter = adapter
         filmRecycler.layoutManager = LinearLayoutManager(this)
 
-        viewModel.movieItem.observe(this) { movieList ->
-            adapter.submitList(movieList)
-        }
-
-        viewModel.tuneItem.observe(this) { movieTune ->
-            adapter.submitList(movieTune)
-        }
+//        viewModel.movieItem.observe(this) { movieList ->
+//            adapter.submitList(movieList)
+//        }
+//
+//        viewModel.tuneItem.observe(this) { movieTune ->
+//            adapter.submitList(movieTune)
+//        }
 
 
          val handler = Handler()

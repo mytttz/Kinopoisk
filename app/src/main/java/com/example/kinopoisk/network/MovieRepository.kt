@@ -1,5 +1,6 @@
 package com.example.kinopoisk.network
 
+import androidx.paging.PagingSource
 import com.example.kinopoisk.Movie
 import com.example.kinopoisk.MovieResponse
 import com.example.kinopoisk.PosterResponse
@@ -29,5 +30,9 @@ class MovieRepository(private val apiService: ApiService) {
     }
     suspend fun getTune(params: Map<String, String>): Response<MovieResponse> {
         return apiService.getTune(params = params)
+    }
+
+    fun getMoviesPagingSource(): PagingSource<Int, Movie> {
+        return MoviePagingSource(apiService)
     }
 }

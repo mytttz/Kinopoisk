@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.kinopoisk.Movie
 import com.example.kinopoisk.Poster
 import com.example.kinopoisk.Review
@@ -25,11 +26,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class MovieListViewModel(
+class MovieListViewModel(private val repository: MovieRepository
 ) : ViewModel() {
 
 
     private val movieRepository = MovieRepository(ApiService.create())
+
+    val movies = Pager(PagingConfig(pageSize = 10)) {
+        repository.getMoviesPagingSource()
+    }.flow.cachedIn(viewModelScope)
+
 
     private val _movies = MutableLiveData<List<Movie>>()
     val movieItem: LiveData<List<Movie>> get() = _movies
