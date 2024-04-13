@@ -53,6 +53,7 @@ data class Tune(
     val type: String,
     val year: String,
     val sortField: String,
+    val ageRating: String,
     val ratingKp: String,
     val genres: List<String>,
     val countries: List<String>

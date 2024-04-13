@@ -1,17 +1,52 @@
 package com.example.kinopoisk.network
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.kinopoisk.Logo
 import com.example.kinopoisk.Movie
+import com.example.kinopoisk.Tune
 import retrofit2.HttpException
 import java.io.IOException
 
-class MoviePagingSource(private val apiService: ApiService) : PagingSource<Int, Movie>() {
+class MoviePagingSource(
+    private val apiService: ApiService,
+    private val type: String? = null,
+    private val query: String? = null,
+    private val tune: Tune? = null
+) : PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         try {
             val nextPageNumber = params.key ?: 1
-            val response = apiService.getMovies(nextPageNumber)
+            val response = when {
+                query != null -> {
+                    Log.i("searchMovies", apiService.searchMovies(nextPageNumber, query = query).toString())
+                    apiService.searchMovies(nextPageNumber, query = query)
+                }
+                tune != null -> {
+                    val params = mutableMapOf<String, String>()
+
+                    tune.type.takeIf { it.isNotEmpty() }?.let { params["type"] = it }
+                    tune.sortField.takeIf { it.isNotEmpty() }
+                        ?.let { params["sortField"] = it; params["sortType"] = "-1" }
+                    tune.year.takeIf { it.isNotEmpty() }?.let { params["year"] = it }
+                    tune.ageRating.takeIf { it.isNotEmpty() }?.let { params["ageRating"] = it }
+                    tune.ratingKp.takeIf { it.isNotEmpty() }?.let { params["rating.kp"] = it }
+                    tune.genres.takeIf { it.isNotEmpty() }?.forEachIndexed { index, genre ->
+                        params["genres.name"] = genre
+                    }
+                    tune.countries.takeIf { it.isNotEmpty() }?.forEachIndexed { index, country ->
+                        params["countries.name"] = country
+                    }
+                    Log.i("getTune", apiService.getTune(nextPageNumber, params = params).toString())
+                    apiService.getTune(nextPageNumber, params = params)
+                }
+
+                else -> apiService.getMovies(nextPageNumber)
+            }
+            Log.i("response", response.body().toString())
+
 
             return if (response.isSuccessful) {
                 val movies = response.body()?.docs ?: emptyList()
@@ -32,4 +67,5 @@ class MoviePagingSource(private val apiService: ApiService) : PagingSource<Int, 
         return state.anchorPosition
     }
 }
+
 

@@ -1,86 +1,108 @@
-<!-- bottom_sheet_layout.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:padding="16dp">
 
     <!-- По году -->
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/yearLabel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:text="По году"
         android:textSize="16sp"
-        android:padding="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/yearsSlider"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:valueFrom="1895"
         android:valueTo="2024"
         app:values="@array/years"
-        android:stepSize="1"/>
+        android:stepSize="1"
+        app:layout_constraintTop_toBottomOf="@id/yearLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- По стране -->
     <TextView
-        android:id="@+id/country"
-        android:layout_width="match_parent"
+        android:id="@+id/countrySelect"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="По стране"
         android:textSize="16sp"
-        android:padding="8dp"/>
-
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/yearsSlider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- По возрастному рейтингу -->
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/ageRating"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="По возрастному рейтингу"
         android:textSize="16sp"
-        android:padding="8dp"/>
-
-    <Spinner
-        android:id="@+id/ageRatingSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"/>
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/countrySelect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- По рейтингу -->
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/ratingLabel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="По рейтингу"
         android:textSize="16sp"
-        android:padding="8dp"/>
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/ageRating"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Slider для выбора рейтинга ОТ и ДО -->
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/ratingSlider"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:valueFrom="0"
         android:valueTo="10"
         app:values="@array/rating"
-        android:stepSize="1"/>
+        android:stepSize="1"
+        app:layout_constraintTop_toBottomOf="@id/ratingLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- По жанру -->
     <TextView
-        android:id="@+id/genre"
-        android:layout_width="match_parent"
+        android:id="@+id/genreSelect"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="По жанру"
         android:textSize="16sp"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/ratingSlider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Первая сегментированная кнопка для выбора типа контента -->
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/contentTypeButtonGroup"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:singleSelection="true"
-        >
+        app:layout_constraintTop_toBottomOf="@id/genreSelect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/movieButton"
@@ -111,10 +133,12 @@
     <!-- Вторая сегментированная кнопка для выбора сортировки -->
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/sortByButtonGroup"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:singleSelection="true"
-        >
+        app:layout_constraintTop_toBottomOf="@id/contentTypeButtonGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ratingButton"
@@ -145,8 +169,24 @@
     <!-- Кнопка применить фильтры -->
     <Button
         android:id="@+id/applyFiltersButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Применить фильтры"/>
+        android:text="Применить фильтры"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintTop_toBottomOf="@id/sortByButtonGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/resetFiltersButton"
+        android:layout_marginTop="16dp"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/resetFiltersButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Сбросить фильтры"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintTop_toBottomOf="@id/sortByButtonGroup"
+        app:layout_constraintStart_toEndOf="@id/applyFiltersButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import com.example.kinopoisk.Movie
 import com.example.kinopoisk.MovieResponse
 import com.example.kinopoisk.PosterResponse
 import com.example.kinopoisk.ReviewResponse
+import com.example.kinopoisk.Tune
 
 import retrofit2.Response
 
@@ -32,7 +33,7 @@ class MovieRepository(private val apiService: ApiService) {
         return apiService.getTune(params = params)
     }
 
-    fun getMoviesPagingSource(): PagingSource<Int, Movie> {
-        return MoviePagingSource(apiService)
+    fun getMoviesPagingSource(type: String? = null, query: String? = null, tune: Tune? = null): PagingSource<Int, Movie> {
+        return MoviePagingSource(apiService, type, query, tune)
     }
 }

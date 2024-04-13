@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CountriesOrGenriesAdapter(private val countryOrGenry: List<String>) :
+class CountriesOrGenriesAdapter(private val countryOrGenry: List<String>, private val selectedCountriesOrGenres: List<String>) :
     RecyclerView.Adapter<CountriesOrGenriesAdapter.ViewHolder>() {
 
     private val selectedCountries = mutableSetOf<String>()
@@ -27,11 +28,12 @@ class CountriesOrGenriesAdapter(private val countryOrGenry: List<String>) :
     override fun getItemCount(): Int = countryOrGenry.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val textItem: TextView = itemView.findViewById(R.id.countryOrGenryName)
         private val checkbox: CheckBox = itemView.findViewById(R.id.checkbox)
 
         fun bind(countryOrGenry: String) {
-            textItem.text = countryOrGenry
+            checkbox.text = countryOrGenry
+            checkbox.isChecked = selectedCountriesOrGenres.contains(countryOrGenry)
+            selectedCountries.addAll(selectedCountriesOrGenres)
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     selectedCountries.add(countryOrGenry)

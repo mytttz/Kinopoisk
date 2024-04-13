@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
     private lateinit var countriesRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var adapter: CountriesOrGenriesAdapter
+    private lateinit var ageRadioGroup: RadioGroup
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,29 +31,57 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
         confirmButton = view.findViewById(R.id.confirmButton)
         countriesRecyclerView = view.findViewById(R.id.countriesRecyclerView)
         searchView = view.findViewById(R.id.searchView)
-
+        ageRadioGroup = view.findViewById(R.id.ageRadioGroup)
+        adapter = CountriesOrGenriesAdapter(
+            emptyList(), emptyList()
+        )
         if (arrayType == "country") {
-            adapter =
-                CountriesOrGenriesAdapter(resources.getStringArray(R.array.countries).toList())
+            adapter = CountriesOrGenriesAdapter(
+                resources.getStringArray(R.array.countries).toList(),
+                TuneSingleton.selectedCountries
+            )
         } else if (arrayType == "genre") {
-            adapter = CountriesOrGenriesAdapter(resources.getStringArray(R.array.genres).toList())
+            adapter = CountriesOrGenriesAdapter(
+                resources.getStringArray(R.array.genres).toList(),
+                TuneSingleton.selectedGenres
+            )
+        } else {
+            countriesRecyclerView.visibility = View.GONE
+            searchView.visibility = View.GONE
+            ageRadioGroup.visibility = View.VISIBLE
+            for (i in 0 until ageRadioGroup.childCount) {
+                val radioButton = ageRadioGroup.getChildAt(i) as RadioButton
+                if (radioButton.text == TuneSingleton.ageRating+"+") {
+                    radioButton.isChecked = true
+                    break
+                }
+            }
+
         }
         countriesRecyclerView.layoutManager = LinearLayoutManager(context)
         countriesRecyclerView.adapter = adapter
 
         confirmButton.setOnClickListener {
-            val parentFragment = parentFragment as TuneBottomSheet
             if (arrayType == "country") {
-                parentFragment.updateCountries(adapter.getSelectedCountriesOrGenries())
+                TuneSingleton.updateSelectedCountries(adapter.getSelectedCountriesOrGenries())
                 dismiss()
             } else if (arrayType == "genre") {
-                parentFragment.updateGenries(adapter.getSelectedCountriesOrGenries())
+                TuneSingleton.updateSelectedGenres(adapter.getSelectedCountriesOrGenries())
                 dismiss()
+            } else {
+                val radioButtonText = when (ageRadioGroup.checkedRadioButtonId) {
+                    R.id.radioButton0 -> "0"
+                    R.id.radioButton6 -> "6"
+                    R.id.radioButton12 -> "12"
+                    R.id.radioButton18 -> "16"
+                    R.id.radioButton18 -> "18"
+                    else -> ""
+                }
+                TuneSingleton.ageRating = radioButtonText
+                dismiss()
+
             }
         }
-
-        // Инициализация других элементов и логика фильтрации...
-
         return view
     }
 }

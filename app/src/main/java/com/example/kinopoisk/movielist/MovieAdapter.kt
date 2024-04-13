@@ -41,7 +41,7 @@ class MovieAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        Log.i("ee", "asdad")
+        Log.i("MovieAdapter", "onCreateViewHolder")
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.movie_list_item, parent, false)
         return MovieViewHolder(itemView)

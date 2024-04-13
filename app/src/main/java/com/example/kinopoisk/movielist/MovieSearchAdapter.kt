@@ -23,7 +23,7 @@ class MovieSearchAdapter(
     private val context: Context,
     private val viewModel: MovieListViewModel
 ) :
-    ListAdapter<Movie, MovieSearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
+    PagingDataAdapter <Movie, MovieSearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val movieName: TextView = itemView.findViewById(R.id.movieName)
