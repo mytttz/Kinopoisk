@@ -13,8 +13,10 @@
 
     <array name="countries">
         <item>Россия</item>
+        <item>Великобритания</item>
         <item>США</item>
         <item>СССР</item>
+        <item>Франция</item>
         <item>Австралия</item>
         <item>Австрия</item>
         <item>Азербайджан</item>
@@ -53,7 +55,6 @@
         <item>Бутан</item>
         <item>Вануату</item>
         <item>Ватикан</item>
-        <item>Великобритания</item>
         <item>Венгрия</item>
         <item>Венесуэла</item>
         <item>Виргинские Острова (Великобритания)</item>
@@ -184,7 +185,6 @@
         <item>Пуэрто Рико</item>
         <item>Реюньон</item>
         <item>Российская империя</item>
-        <item>Россия</item>
         <item>Руанда</item>
         <item>Румыния</item>
         <item>Сальвадор</item>
@@ -208,10 +208,8 @@
         <item>Словения</item>
         <item>Соломоновы Острова</item>
         <item>Сомали</item>
-        <item>СССР</item>
         <item>Судан</item>
         <item>Суринам</item>
-        <item>США</item>
         <item>Сьерра-Леоне</item>
         <item>Таджикистан</item>
         <item>Таиланд</item>
@@ -236,7 +234,6 @@
         <item>Филиппины</item>
         <item>Финляндия</item>
         <item>Фолклендские острова</item>
-        <item>Франция</item>
         <item>Французская Гвиана</item>
         <item>Французская Полинезия</item>
         <item>Хорватия</item>
@@ -263,6 +260,11 @@
     </array>
 
     <array name="genres">
+        <item>комедия</item>
+        <item>мультфильм</item>
+        <item>триллер</item>
+        <item>ужасы</item>
+        <item>фантастика</item>
         <item>аниме</item>
         <item>биография</item>
         <item>боевик</item>
@@ -275,13 +277,11 @@
         <item>драма</item>
         <item>игра</item>
         <item>история</item>
-        <item>комедия</item>
         <item>концерт</item>
         <item>короткометражка</item>
         <item>криминал</item>
         <item>мелодрама</item>
         <item>музыка</item>
-        <item>мультфильм</item>
         <item>мьюзикл</item>
         <item>новости</item>
         <item>приключения</item>
@@ -289,9 +289,6 @@
         <item>семейный</item>
         <item>спорт</item>
         <item>ток-шоу</item>
-        <item>триллер</item>
-        <item>ужасы</item>
-        <item>фантастика</item>
         <item>фильм-нуар</item>
         <item>фэнтези</item>
         <item>церемония</item>

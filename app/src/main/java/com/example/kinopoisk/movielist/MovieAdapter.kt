@@ -58,7 +58,7 @@ class MovieAdapter(
             .resize(72, 108)
             .transform(RoundedCornerTransformation())
             .placeholder(R.drawable.download_icon) // Заглушка, отображаемая во время загрузки
-            .error(R.drawable.tune_icon) // Заглушка, отображаемая при ошибке загрузки ВРЕМЕННАЯ
+            .error(R.drawable.stub) // Заглушка, отображаемая при ошибке загрузки ВРЕМЕННАЯ
             .into(holder.moviePoster)
     }
 

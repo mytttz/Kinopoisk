@@ -61,6 +61,17 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
         countriesRecyclerView.layoutManager = LinearLayoutManager(context)
         countriesRecyclerView.adapter = adapter
 
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filterItems(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filterItems(newText)
+                return false
+            }
+        })
         confirmButton.setOnClickListener {
             if (arrayType == "country") {
                 TuneSingleton.updateSelectedCountries(adapter.getSelectedCountriesOrGenries())

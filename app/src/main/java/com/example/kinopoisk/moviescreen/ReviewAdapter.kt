@@ -15,11 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoisk.R
 import com.example.kinopoisk.Review
 import com.example.kinopoisk.movielist.MovieListViewModel
+import java.util.Date
 
 
-class ReviewAdapter(
-//    private val context: Context,
-//    private val viewModel: MovieListViewModel
+class ReviewAdapter(private val showBottomSheet: (
+    author: String?,
+    date: Date?,
+    type: String?,
+    title: String?,
+    review: String?
+) -> Unit
+
 ) :
     PagingDataAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
 
@@ -31,9 +37,19 @@ class ReviewAdapter(
         val textReview: TextView = itemView.findViewById(R.id.textReview)
 
         init {
-//            itemView.setOnClickListener {
-//                viewModel.selectedFilm(context, getItem(absoluteAdapterPosition)?.id)
-//            }
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val review = getItem(position)
+                    showBottomSheet(
+                        review?.author,
+                        review?.date,
+                        review?.type,
+                        review?.title,
+                        review?.review
+                    )
+                }
+            }
         }
     }
 

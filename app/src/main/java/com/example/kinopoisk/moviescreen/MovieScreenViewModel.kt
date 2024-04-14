@@ -12,8 +12,10 @@ import com.example.kinopoisk.Review
 import com.example.kinopoisk.Tune
 import com.example.kinopoisk.network.MoviePagingSource
 import com.example.kinopoisk.network.MovieRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 //package com.example.kinopoisk.moviescreen
 //
@@ -61,17 +63,20 @@ class MovieScreenViewModel(
     private fun fetchMovie(id: Int) {
         viewModelScope.launch {
             try {
-                val response = repository.getMovie(id)
-                if (response.isSuccessful) {
-                    _movie.postValue(response.body())
-                } else {
-                    _error.postValue("Failed to fetch movie: ${response.message()}")
+                withContext(Dispatchers.IO) {
+                    val response = repository.getMovie(id)
+                    if (response.isSuccessful) {
+                        _movie.postValue(response.body())
+                    } else {
+                        _error.postValue("Failed to fetch movie: ${response.message()}")
+                    }
                 }
             } catch (e: Exception) {
                 _error.postValue("Error occurred: ${e.message}")
             }
         }
     }
+
 
     private fun fetchReviews(review: Int) {
         val pagingSource = repository.getReviewPagingSource(review = review)

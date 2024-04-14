@@ -6,6 +6,8 @@ data class Movie(
     val alternativeName: String,
     val year: String,
     val rating: Rating,
+    val movieLength: Int,
+    val seriesLength: String,
     val type: String,
     val logo: Logo,
     val genres: List<Genres>,
@@ -13,7 +15,10 @@ data class Movie(
     val poster: Poster,
     val description: String,
     val shortDescription: String,
-    val persons: List<Person>
+    val persons: List<Person>,
+    val releaseYears: List<Years>,
+    val seasonsInfo: List<Season>,
+    val ageRating: String
 )
 
 
@@ -22,6 +27,14 @@ data class Rating(
     val imdb: Double,
     val filmCritics: Double,
     val russianFilmCritics: Double
+)
+data class Season(
+    val number: Int,
+    val episodesCount: Int
+)
+data class Years(
+    val start: String,
+    val end: String
 )
 
 data class Genres(
