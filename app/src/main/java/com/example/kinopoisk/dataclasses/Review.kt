@@ -1,4 +1,4 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.dataclasses
 
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -14,8 +14,7 @@ data class Review(
     val userRating: Int,
     val authorId: Int,
     val date: Date
-)
-{
+) {
     fun getFormattedDate(): String {
         val sdf = SimpleDateFormat("d MMMM yyyy", Locale("ru"))
         return sdf.format(date)

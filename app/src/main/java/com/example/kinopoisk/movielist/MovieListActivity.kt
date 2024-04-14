@@ -2,24 +2,21 @@ package com.example.kinopoisk.movielist
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kinopoisk.MovieListViewModelFactory
 import com.example.kinopoisk.R
-import com.example.kinopoisk.Tune
-import com.example.kinopoisk.TuneBottomSheet
 import com.example.kinopoisk.TuneListener
+import com.example.kinopoisk.dataclasses.Tune
 import com.example.kinopoisk.network.ApiService
+import com.example.kinopoisk.network.MovieListViewModelFactory
 import com.example.kinopoisk.network.MovieRepository
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
-import kotlinx.coroutines.launch
 
 
 class MovieListActivity : AppCompatActivity(), TuneListener {
@@ -39,8 +36,10 @@ class MovieListActivity : AppCompatActivity(), TuneListener {
         searchBar = findViewById(R.id.searchBar)
 
         viewModel =
-            ViewModelProvider(this, MovieListViewModelFactory(MovieRepository(ApiService.create())))
-                .get(MovieListViewModel::class.java)
+            ViewModelProvider(
+                this,
+                MovieListViewModelFactory(MovieRepository(ApiService.create()))
+            )[MovieListViewModel::class.java]
 
         val adapter = MovieAdapter(this, viewModel)
         val adapterSearch = MovieSearchAdapter(this, viewModel)
@@ -60,29 +59,26 @@ class MovieListActivity : AppCompatActivity(), TuneListener {
             adapter.submitData(lifecycle, pagingData)
         }
 
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
 
-        searchBarInputText.editText.addTextChangedListener { text ->
-            // Отменяем предыдущие отложенные действия
+        searchBarInputText.editText.addTextChangedListener { _ ->
             handler.removeCallbacksAndMessages(null)
-
-            // Запускаем отложенное действие через 1 секунду
             handler.postDelayed({
                 movieSearchList.adapter = adapterSearch
                 movieSearchList.layoutManager = LinearLayoutManager(this)
-                Log.i("adapter", "good")
                 if (searchBarInputText.editText.text.isNotBlank()) {
                     viewModel.fetchMovies(query = searchBarInputText.editText.text.toString())
-                    viewModel.movies.observe(this) { pagingData ->
+                    viewModel.searchedMovies.observe(this) { pagingData ->
                         adapterSearch.submitData(lifecycle, pagingData)
                     }
                 } else {
-                    viewModel.movies.observe(this) { pagingData ->
+                    viewModel.searchedMovies.observe(this) { _ ->
                         adapterSearch.submitData(lifecycle, PagingData.empty())
                     }
                 }
-            }, 1000) // Задержка в 1 секунду
+            }, 1000)
         }
+
     }
 
     override fun onTuneCreated(tune: Tune) {

@@ -1,18 +1,13 @@
 package com.example.kinopoisk.network
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.kinopoisk.MovieResponse
-import com.example.kinopoisk.PosterResponse
-import com.example.kinopoisk.ReviewResponse
-import com.example.kinopoisk.Tune
+import com.example.kinopoisk.dataclasses.Tune
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MoviePagingSource<T: Any>(
+class MoviePagingSource<T : Any>(
     private val apiService: ApiService,
-    private val type: String? = null,
     private val query: String? = null,
     private val tune: Tune? = null,
     private val reviews: Int? = null,
@@ -25,50 +20,38 @@ class MoviePagingSource<T: Any>(
                 val nextPageNumber = params.key ?: 1
                 val response = when {
                     query != null -> {
-                        Log.i(
-                            "searchMovies",
-                            apiService.searchMovies(nextPageNumber, query = query).toString()
-                        )
                         apiService.searchMovies(nextPageNumber, query = query)
                     }
 
                     tune != null -> {
-                        val params = mutableMapOf<String, String>()
-
-                        tune.type.takeIf { it.isNotEmpty() }?.let { params["type"] = it }
+                        val paramsUrl = mutableMapOf<String, String>()
+                        tune.type.takeIf { it.isNotEmpty() }?.let { paramsUrl["type"] = it }
                         tune.sortField.takeIf { it.isNotEmpty() }
-                            ?.let { params["sortField"] = it; params["sortType"] = "-1" }
-                        tune.year.takeIf { it.isNotEmpty() }?.let { params["year"] = it }
-                        tune.ageRating.takeIf { it.isNotEmpty() }?.let { params["ageRating"] = it }
-                        tune.ratingKp.takeIf { it.isNotEmpty() }?.let { params["rating.kp"] = it }
+                            ?.let { paramsUrl["sortField"] = it; paramsUrl["sortType"] = "-1" }
+                        tune.year.takeIf { it.isNotEmpty() }?.let { paramsUrl["year"] = it }
+                        tune.ageRating.takeIf { it.isNotEmpty() }
+                            ?.let { paramsUrl["ageRating"] = it }
+                        tune.ratingKp.takeIf { it.isNotEmpty() }
+                            ?.let { paramsUrl["rating.kp"] = it }
                         tune.genres.takeIf { it.isNotEmpty() }?.forEachIndexed { _, genre ->
-                            params["genres.name"] = genre
+                            paramsUrl["genres.name"] = genre
                         }
                         tune.countries.takeIf { it.isNotEmpty() }?.forEachIndexed { _, country ->
-                            params["countries.name"] = country
+                            paramsUrl["countries.name"] = country
                         }
-                        Log.i("getTune", apiService.getTune(nextPageNumber, params = params).toString())
-                        apiService.getTune(nextPageNumber, params = params)
+                        apiService.getTune(nextPageNumber, params = paramsUrl)
                     }
 
                     reviews != null -> {
-                        Log.i(
-                            "searchMovies",
-                            apiService.getReview(nextPageNumber, movieId = reviews).toString()
-                        )
                         apiService.getReview(nextPageNumber, movieId = reviews)
                     }
 
                     posters != null -> {
-                        Log.i(
-                            "searchMovies",
-                            apiService.getPosters(nextPageNumber, movieId = posters).toString()
-                        )
                         apiService.getPosters(nextPageNumber, movieId = posters)
                     }
+
                     else -> apiService.getMovies(nextPageNumber)
                 }
-                Log.i("response", response.body().toString())
 
                 return@withContext if (response.isSuccessful) {
                     val items = response.body()?.let { body ->

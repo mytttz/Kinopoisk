@@ -1,22 +1,17 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.moviescreen
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
+import com.example.kinopoisk.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButtonToggleGroup
-import com.google.android.material.slider.RangeSlider
 
 class FullDescriptionBottomSheet : BottomSheetDialogFragment() {
     private lateinit var shortDescription: TextView
     private lateinit var fullDescription: TextView
-
 
 
     override fun onCreateView(
@@ -31,12 +26,10 @@ class FullDescriptionBottomSheet : BottomSheetDialogFragment() {
         val shortDescriptionString = arguments?.getString("shortDESCRIPTION")
         val fullDescriptionString = arguments?.getString("fullDESCRIPTION")
         shortDescription.text = shortDescriptionString
-        fullDescription.text =fullDescriptionString
+        fullDescription.text = fullDescriptionString
 
         return view
     }
-
-
 
     companion object {
         const val TAG = "FullDescriptionBottomSheet"

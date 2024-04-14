@@ -1,30 +1,27 @@
 package com.example.kinopoisk.moviescreen
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoisk.R
-import com.example.kinopoisk.Review
-import com.example.kinopoisk.movielist.MovieListViewModel
+import com.example.kinopoisk.dataclasses.Review
 import java.util.Date
 
 
-class ReviewAdapter(private val showBottomSheet: (
-    author: String?,
-    date: Date?,
-    type: String?,
-    title: String?,
-    review: String?
-) -> Unit
+class ReviewAdapter(
+    private val showBottomSheet: (
+        author: String?,
+        date: Date?,
+        type: String?,
+        title: String?,
+        review: String?
+    ) -> Unit
 
 ) :
     PagingDataAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDiffCallback()) {
@@ -65,10 +62,11 @@ class ReviewAdapter(private val showBottomSheet: (
         holder.dateReview.text = date
         holder.textReview.text = getItem(position)?.review
         when (getItem(position)?.title) {
-            "" -> {
+            null -> {
                 holder.titleReview.visibility = View.GONE
                 holder.textReview.maxLines = 5
             }
+
             else -> holder.titleReview.text = getItem(position)?.title
         }
         when (getItem(position)?.type) {

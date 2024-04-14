@@ -13,13 +13,12 @@
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Поиск..."
-            app:menu="@menu/searchbar_menu"
+            android:hint="@string/search"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator" />
+            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+            app:menu="@menu/searchbar_menu" />
     </com.google.android.material.appbar.AppBarLayout>
-    <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,7 +35,7 @@
         android:id="@+id/searchBarInputText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Поиск..."
+        android:hint="@string/search"
         app:layout_anchor="@id/searchBar">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -46,7 +45,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </com.google.android.material.search.SearchView>
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

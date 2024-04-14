@@ -1,22 +1,24 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.movielist
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kinopoisk.R
+import com.example.kinopoisk.dataclasses.TuneSingleton
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 
-class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var confirmButton: Button
+class CountriesOrGenresFilterBottomSheet : BottomSheetDialogFragment() {
+    private lateinit var confirmButton: MaterialButton
     private lateinit var countriesRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
-    private lateinit var adapter: CountriesOrGenriesAdapter
+    private lateinit var adapter: CountriesOrGenresAdapter
     private lateinit var ageRadioGroup: RadioGroup
 
     override fun onCreateView(
@@ -32,16 +34,16 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
         countriesRecyclerView = view.findViewById(R.id.countriesRecyclerView)
         searchView = view.findViewById(R.id.searchView)
         ageRadioGroup = view.findViewById(R.id.ageRadioGroup)
-        adapter = CountriesOrGenriesAdapter(
+        adapter = CountriesOrGenresAdapter(
             emptyList(), emptyList()
         )
         if (arrayType == "country") {
-            adapter = CountriesOrGenriesAdapter(
+            adapter = CountriesOrGenresAdapter(
                 resources.getStringArray(R.array.countries).toList(),
                 TuneSingleton.selectedCountries
             )
         } else if (arrayType == "genre") {
-            adapter = CountriesOrGenriesAdapter(
+            adapter = CountriesOrGenresAdapter(
                 resources.getStringArray(R.array.genres).toList(),
                 TuneSingleton.selectedGenres
             )
@@ -51,7 +53,7 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
             ageRadioGroup.visibility = View.VISIBLE
             for (i in 0 until ageRadioGroup.childCount) {
                 val radioButton = ageRadioGroup.getChildAt(i) as RadioButton
-                if (radioButton.text == TuneSingleton.ageRating+"+") {
+                if (radioButton.text == TuneSingleton.ageRating + "+") {
                     radioButton.isChecked = true
                     break
                 }
@@ -74,17 +76,17 @@ class CountriesOrGenriesFilterBottomSheet : BottomSheetDialogFragment() {
         })
         confirmButton.setOnClickListener {
             if (arrayType == "country") {
-                TuneSingleton.updateSelectedCountries(adapter.getSelectedCountriesOrGenries())
+                TuneSingleton.updateSelectedCountries(adapter.getSelectedCountriesOrGenres())
                 dismiss()
             } else if (arrayType == "genre") {
-                TuneSingleton.updateSelectedGenres(adapter.getSelectedCountriesOrGenries())
+                TuneSingleton.updateSelectedGenres(adapter.getSelectedCountriesOrGenres())
                 dismiss()
             } else {
                 val radioButtonText = when (ageRadioGroup.checkedRadioButtonId) {
                     R.id.radioButton0 -> "0"
                     R.id.radioButton6 -> "6"
                     R.id.radioButton12 -> "12"
-                    R.id.radioButton18 -> "16"
+                    R.id.radioButton16 -> "16"
                     R.id.radioButton18 -> "18"
                     else -> ""
                 }

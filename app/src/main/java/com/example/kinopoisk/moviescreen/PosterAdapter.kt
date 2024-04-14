@@ -1,17 +1,16 @@
 package com.example.kinopoisk.moviescreen
 
-import com.example.kinopoisk.Poster
-import com.example.kinopoisk.RoundedCornerTransformation
-import com.squareup.picasso.Picasso
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kinopoisk.R
+import com.example.kinopoisk.RoundedCornerTransformation
+import com.example.kinopoisk.dataclasses.Poster
+import com.squareup.picasso.Picasso
 
 
 class PosterAdapter(
@@ -33,8 +32,8 @@ class PosterAdapter(
             .load(getItem(position)?.url)
             .resize(360, 240)
             .transform(RoundedCornerTransformation(cornerRadius = 64f))
-            .placeholder(R.drawable.download_icon) // Заглушка, отображаемая во время загрузки
-            .error(R.drawable.stub) // Заглушка, отображаемая при ошибке загрузки ВРЕМЕННАЯ
+            .placeholder(R.drawable.stub)
+            .error(R.drawable.stub)
             .into(holder.poster)
     }
 

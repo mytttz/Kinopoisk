@@ -1,4 +1,4 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.dataclasses
 
 data class Movie(
     val id: Int,
@@ -13,12 +13,12 @@ data class Movie(
     val genres: List<Genres>,
     val countries: List<Countries>,
     val poster: Poster,
-    val description: String,
-    val shortDescription: String,
+    val description: String?,
+    val shortDescription: String?,
     val persons: List<Person>,
     val releaseYears: List<Years>,
     val seasonsInfo: List<Season>,
-    val ageRating: String
+    val ageRating: String?
 )
 
 
@@ -28,10 +28,12 @@ data class Rating(
     val filmCritics: Double,
     val russianFilmCritics: Double
 )
+
 data class Season(
     val number: Int,
     val episodesCount: Int
 )
+
 data class Years(
     val start: String,
     val end: String
@@ -46,8 +48,8 @@ data class Countries(
 )
 
 data class Poster(
-    val url: String,
-    val previewUrl: String
+    val url: String?,
+    val previewUrl: String?
 )
 
 data class Logo(

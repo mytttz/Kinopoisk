@@ -1,10 +1,9 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.network
 
-import MovieScreenViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.kinopoisk.movielist.MovieListViewModel
-import com.example.kinopoisk.network.MovieRepository
+import com.example.kinopoisk.moviescreen.MovieScreenViewModel
 
 
 class MovieListViewModelFactory(

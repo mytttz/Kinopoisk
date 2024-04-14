@@ -1,4 +1,4 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.dataclasses
 
 object TuneSingleton {
     var selectedYear: String = ""

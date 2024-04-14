@@ -1,13 +1,13 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.moviescreen
 
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.kinopoisk.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class FullReviewBottomSheet : BottomSheetDialogFragment() {
@@ -39,15 +39,22 @@ class FullReviewBottomSheet : BottomSheetDialogFragment() {
         userName.text = userNameString
         date.text = dateString
         title.text = titleString
+        if (title.text.isEmpty()) {
+            title.visibility = View.GONE
+        }
         review.text = reviewString
+        if (review.text.isEmpty()) {
+            review.visibility = View.GONE
+        }
         when (typeString) {
-            "Позитивный" -> type.setBackgroundColor(Color.parseColor("#03fc0f"))
-            "Нейтральный" -> type.setBackgroundColor(Color.parseColor("#bdbfbe"))
-            "Негативный" -> type.setBackgroundColor(Color.parseColor("#fc0303"))
+            "Позитивный" -> context?.let { type.setBackgroundColor(it.getColor(R.color.positive_green)) }
+            "Нейтральный" -> context?.let { type.setBackgroundColor(it.getColor(R.color.neutral_gray)) }
+            "Негативный" -> context?.let { type.setBackgroundColor(it.getColor(R.color.negative_red)) }
         }
 
         return view
     }
+
     companion object {
         const val TAG = "FullReviewBottomSheet"
     }

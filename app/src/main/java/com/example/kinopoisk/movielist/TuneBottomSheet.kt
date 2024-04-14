@@ -1,14 +1,16 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.movielist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Spinner
 import android.widget.TextView
+import com.example.kinopoisk.R
+import com.example.kinopoisk.TuneListener
+import com.example.kinopoisk.dataclasses.Tune
+import com.example.kinopoisk.dataclasses.TuneSingleton
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.slider.RangeSlider
 
@@ -20,8 +22,8 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
     private lateinit var genreSelect: TextView
     private lateinit var contentTypeButtonGroup: MaterialButtonToggleGroup
     private lateinit var sortByButtonGroup: MaterialButtonToggleGroup
-    private lateinit var applyFiltersButton: Button
-    private lateinit var resetFiltersButton: Button
+    private lateinit var applyFiltersButton: MaterialButton
+    private lateinit var resetFiltersButton: MaterialButton
     private lateinit var tuneListener: TuneListener
 
 
@@ -40,7 +42,6 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
         sortByButtonGroup = view.findViewById(R.id.sortByButtonGroup)
         applyFiltersButton = view.findViewById(R.id.applyFiltersButton)
         resetFiltersButton = view.findViewById(R.id.resetFiltersButton)
-
 
         yearsSlider.values =
             TuneSingleton.selectedYear.takeIf { it.isNotEmpty() }?.split("-")?.map { it.toFloat() }
@@ -70,22 +71,31 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
         val args = Bundle()
         countrySelect.setOnClickListener {
             args.putString("TYPE", "country")
-            val countriesFilterBottomSheet = CountriesOrGenriesFilterBottomSheet()
+            val countriesFilterBottomSheet = CountriesOrGenresFilterBottomSheet()
             countriesFilterBottomSheet.arguments = args
             countriesFilterBottomSheet.show(childFragmentManager, "CountriesFilterBottomSheet")
         }
 
         genreSelect.setOnClickListener {
             args.putString("TYPE", "genre")
-            val countriesFilterBottomSheet = CountriesOrGenriesFilterBottomSheet()
+            val countriesFilterBottomSheet = CountriesOrGenresFilterBottomSheet()
             countriesFilterBottomSheet.arguments = args
             countriesFilterBottomSheet.show(childFragmentManager, "CountriesFilterBottomSheet")
         }
 
 
-        countrySelect.text = "По стране:" + TuneSingleton.selectedCountries.joinToString(", ")
-        genreSelect.text = "По жанру:" + TuneSingleton.selectedGenres.joinToString(", ")
-        ageRating.text = "По возрастному рейтингу:" + TuneSingleton.ageRating
+        countrySelect.text = buildString {
+            append("По стране: ")
+            append(TuneSingleton.selectedCountries.joinToString(", "))
+        }
+        genreSelect.text = buildString {
+            append("По жанру: ")
+            append(TuneSingleton.selectedGenres.joinToString(", "))
+        }
+        ageRating.text = buildString {
+            append("По возрастному рейтингу:")
+            append(TuneSingleton.ageRating)
+        }
 
         resetFiltersButton.setOnClickListener {
             val tune = Tune(
@@ -111,15 +121,13 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
 
         ageRating.setOnClickListener {
             args.putString("TYPE", "ageRating")
-            val countriesFilterBottomSheet = CountriesOrGenriesFilterBottomSheet()
+            val countriesFilterBottomSheet = CountriesOrGenresFilterBottomSheet()
             countriesFilterBottomSheet.arguments = args
             countriesFilterBottomSheet.show(childFragmentManager, "CountriesFilterBottomSheet")
         }
         applyFiltersButton.setOnClickListener {
 
-            // Получение значений из всех виджетов
             val year = yearsSlider.values.map { it.toInt() }.joinToString("-")
-//            val ageRating = ageRatingSpinner.selectedItem.toString()
             val rating = ratingSlider.values.map { it.toInt() }.joinToString("-")
 
             val contentType = when (contentTypeButtonGroup.checkedButtonId) {
@@ -155,6 +163,24 @@ class TuneBottomSheet : BottomSheetDialogFragment() {
             dismiss()
         }
         return view
+    }
+
+    override fun onResume() {
+
+
+        countrySelect.text = buildString {
+            append("По стране:")
+            append(TuneSingleton.selectedCountries.joinToString(", "))
+        }
+        genreSelect.text = buildString {
+            append("По жанру:")
+            append(TuneSingleton.selectedGenres.joinToString(", "))
+        }
+        ageRating.text = buildString {
+            append("По возрастному рейтингу:")
+            append(TuneSingleton.ageRating)
+        }
+        super.onResume()
     }
 
     fun setTuneListener(listener: TuneListener) {

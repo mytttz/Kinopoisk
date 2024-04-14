@@ -1,8 +1,6 @@
 package com.example.kinopoisk.movielist
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kinopoisk.Movie
 import com.example.kinopoisk.R
 import com.example.kinopoisk.RoundedCornerTransformation
-import com.example.kinopoisk.moviescreen.MovieScreenActivity
+import com.example.kinopoisk.dataclasses.Movie
 import com.squareup.picasso.Picasso
 
 
@@ -23,7 +19,7 @@ class MovieSearchAdapter(
     private val context: Context,
     private val viewModel: MovieListViewModel
 ) :
-    PagingDataAdapter <Movie, MovieSearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
+    PagingDataAdapter<Movie, MovieSearchAdapter.MovieViewHolder>(MovieDiffCallback()) {
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val movieName: TextView = itemView.findViewById(R.id.movieName)
@@ -48,16 +44,19 @@ class MovieSearchAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.movieName.text = getItem(position)?.name
-        holder.movieYear.text= getItem(position)?.year
-        holder.movieCounty.text= getItem(position)?.countries?.joinToString { it.name }
-        holder.movieGenre.text= getItem(position)?.genres?.joinToString { it.name }
-        holder.movieRating.text= getItem(position)?.rating?.kp.toString()
+        holder.movieYear.text = getItem(position)?.year
+        holder.movieCounty.text = getItem(position)?.countries?.joinToString { it.name }
+        holder.movieGenre.text = getItem(position)?.genres?.joinToString { it.name }
+        holder.movieRating.text = buildString {
+            append("KP: ")
+            append(getItem(position)?.rating?.kp.toString())
+        }
         Picasso.get()
             .load(getItem(position)?.poster?.url)
             .resize(72, 108)
             .transform(RoundedCornerTransformation())
-            .placeholder(R.drawable.download_icon) // Заглушка, отображаемая во время загрузки
-            .error(R.drawable.stub) // Заглушка, отображаемая при ошибке загрузки ВРЕМЕННАЯ
+            .placeholder(R.drawable.stub)
+            .error(R.drawable.stub)
             .into(holder.moviePoster)
     }
 

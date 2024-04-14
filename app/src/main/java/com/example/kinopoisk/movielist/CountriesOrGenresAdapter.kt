@@ -1,26 +1,28 @@
-package com.example.kinopoisk
+package com.example.kinopoisk.movielist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kinopoisk.R
 
-class CountriesOrGenriesAdapter(
+class CountriesOrGenresAdapter(
     private val originalItems: List<String>,
     private val selectedCountriesOrGenres: List<String>
-) : RecyclerView.Adapter<CountriesOrGenriesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CountriesOrGenresAdapter.ViewHolder>() {
 
     private var filteredItems: MutableList<String> = originalItems.toMutableList()
-    private val selectedCountries = mutableSetOf<String>()
+    private val selectedCountriesOrGenresList = mutableSetOf<String>()
 
-    fun getSelectedCountriesOrGenries(): List<String> = selectedCountries.toList()
+    fun getSelectedCountriesOrGenres(): List<String> = selectedCountriesOrGenresList.toList()
 
     fun filterItems(query: String?) {
         if (query.isNullOrEmpty()) {
             filteredItems = originalItems.toMutableList()
         } else {
-            filteredItems = originalItems.filter { it.contains(query, ignoreCase = true) }.toMutableList()
+            filteredItems =
+                originalItems.filter { it.contains(query, ignoreCase = true) }.toMutableList()
         }
         notifyDataSetChanged()
     }
@@ -32,8 +34,8 @@ class CountriesOrGenriesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val countryOrGenry = filteredItems[position]
-        holder.bind(countryOrGenry)
+        val countryOrGenre = filteredItems[position]
+        holder.bind(countryOrGenre)
     }
 
     override fun getItemCount(): Int = filteredItems.size
@@ -41,17 +43,17 @@ class CountriesOrGenriesAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val checkbox: CheckBox = itemView.findViewById(R.id.checkbox)
 
-        fun bind(countryOrGenry: String) {
-            checkbox.text = countryOrGenry
-            checkbox.isChecked = selectedCountriesOrGenres.contains(countryOrGenry)
+        fun bind(countryOrGenre: String) {
+            checkbox.text = countryOrGenre
+            checkbox.isChecked = selectedCountriesOrGenres.contains(countryOrGenre)
 
-            selectedCountries.addAll(selectedCountriesOrGenres)
+            selectedCountriesOrGenresList.addAll(selectedCountriesOrGenres)
 
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    selectedCountries.add(countryOrGenry)
+                    selectedCountriesOrGenresList.add(countryOrGenre)
                 } else {
-                    selectedCountries.remove(countryOrGenry)
+                    selectedCountriesOrGenresList.remove(countryOrGenre)
                 }
             }
         }

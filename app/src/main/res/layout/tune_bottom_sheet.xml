@@ -5,13 +5,13 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <!-- По году -->
     <TextView
         android:id="@+id/yearLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="По году"
+        android:text="@string/by_years"
+        android:textColor="@color/md_theme_onSurface"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,172 +21,209 @@
         android:id="@+id/yearsSlider"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:stepSize="1"
+        android:textColor="@color/md_theme_onSurface"
         android:valueFrom="1895"
         android:valueTo="2024"
-        app:values="@array/years"
-        android:stepSize="1"
-        app:layout_constraintTop_toBottomOf="@id/yearLabel"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/yearLabel"
+        app:values="@array/years" />
 
-    <!-- По стране -->
     <TextView
         android:id="@+id/countrySelect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="По стране"
-        android:textSize="16sp"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/yearsSlider"
+        android:text="@string/country"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/yearsSlider" />
 
-    <!-- По возрастному рейтингу -->
     <TextView
         android:id="@+id/ageRating"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="По возрастному рейтингу"
-        android:textSize="16sp"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/countrySelect"
+        android:text="@string/age_rating"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/countrySelect" />
 
-    <!-- По рейтингу -->
     <TextView
         android:id="@+id/ratingLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="По рейтингу"
-        android:textSize="16sp"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/ageRating"
+        android:text="@string/rating"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/genreSelect" />
 
-    <!-- Slider для выбора рейтинга ОТ и ДО -->
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/ratingSlider"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:stepSize="1"
+        android:textColor="@color/md_theme_onSurface"
         android:valueFrom="0"
         android:valueTo="10"
-        app:values="@array/rating"
-        android:stepSize="1"
-        app:layout_constraintTop_toBottomOf="@id/ratingLabel"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/ratingLabel"
+        app:values="@array/rating" />
 
-    <!-- По жанру -->
     <TextView
         android:id="@+id/genreSelect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="По жанру"
-        android:textSize="16sp"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/ratingSlider"
+        android:text="@string/genres"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/ageRating" />
 
-    <!-- Первая сегментированная кнопка для выбора типа контента -->
+    <TextView
+        android:id="@+id/show"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/show"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingSlider" />
+
+    <TextView
+        android:id="@+id/sortBy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/sort_by"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contentTypeButtonGroup" />
+
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/contentTypeButtonGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:layout_constraintTop_toBottomOf="@id/genreSelect"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/show"
+        app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/movieButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Фильм"/>
+            android:text="@string/movie"
+            android:textColor="@color/md_theme_onSurface" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/seriesButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Сериал"/>
+            android:text="@string/serial"
+            android:textColor="@color/md_theme_onSurface" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/allButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Всё"/>
+            android:text="@string/all"
+            android:textColor="@color/md_theme_onSurface" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    <!-- Вторая сегментированная кнопка для выбора сортировки -->
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/sortByButtonGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:layout_constraintTop_toBottomOf="@id/contentTypeButtonGroup"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/sortBy"
+        app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ratingButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="По рейтингу"/>
+            android:text="@string/by_rating"
+            android:textColor="@color/md_theme_onSurface"
+            android:textSize="9sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/popularityButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Популярности"/>
+            android:text="@string/by_popularity"
+            android:textColor="@color/md_theme_onSurface"
+            android:textSize="9sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dateButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="По дате"/>
+            android:text="@string/by_date"
+            android:textColor="@color/md_theme_onSurface"
+            android:textSize="9sp" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    <!-- Кнопка применить фильтры -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/applyFiltersButton"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Применить фильтры"
         android:layout_marginHorizontal="8dp"
-        app:layout_constraintTop_toBottomOf="@id/sortByButtonGroup"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:background="@color/md_theme_primaryContainer"
+        android:text="@string/apply_filters"
+        android:textColor="@color/md_theme_onSurface"
         app:layout_constraintEnd_toStartOf="@id/resetFiltersButton"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sortByButtonGroup" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/resetFiltersButton"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Сбросить фильтры"
         android:layout_marginHorizontal="8dp"
-        app:layout_constraintTop_toBottomOf="@id/sortByButtonGroup"
-        app:layout_constraintStart_toEndOf="@id/applyFiltersButton"
+        android:layout_marginTop="16dp"
+        android:background="@color/md_theme_primaryContainer"
+        android:text="@string/reset_filters"
+        android:textColor="@color/md_theme_onSurface"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toEndOf="@id/applyFiltersButton"
+        app:layout_constraintTop_toBottomOf="@id/sortByButtonGroup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

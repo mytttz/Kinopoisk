@@ -8,6 +8,7 @@
         android:id="@+id/checkbox"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textColor="@color/md_theme_onSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

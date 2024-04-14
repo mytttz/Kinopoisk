@@ -1,32 +1,22 @@
 package com.example.kinopoisk.moviescreen
 
-import MovieScreenViewModel
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isEmpty
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.PagingData
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kinopoisk.CountriesOrGenriesFilterBottomSheet
-import com.example.kinopoisk.FullDescriptionBottomSheet
-import com.example.kinopoisk.FullReviewBottomSheet
-import com.example.kinopoisk.MovieListViewModelFactory
-import com.example.kinopoisk.Poster
 import com.example.kinopoisk.R
-import com.example.kinopoisk.Review
 import com.example.kinopoisk.RoundedCornerTransformation
-import com.example.kinopoisk.movielist.MovieListViewModel
 import com.example.kinopoisk.network.ApiService
+import com.example.kinopoisk.network.MovieListViewModelFactory
 import com.example.kinopoisk.network.MovieRepository
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
 import com.google.android.material.carousel.HeroCarouselStrategy
@@ -35,25 +25,36 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+
 class MovieScreenActivity : AppCompatActivity() {
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            MovieListViewModelFactory(
+                MovieRepository(ApiService.create()),
+                intent.getIntExtra("EXTRA_ID", -1)
+            )
+        )
+            .get(MovieScreenViewModel::class.java)
+    }
     private lateinit var movieName: TextView
     private lateinit var movieYear: TextView
     private lateinit var movieCountry: TextView
     private lateinit var movieRating: TextView
     private lateinit var movieDuration: TextView
     private lateinit var movieGenre: TextView
+    private lateinit var actorsTextView: TextView
+    private lateinit var reviewsTextView: TextView
+    private lateinit var postersTextView: TextView
     private lateinit var toolBar: MaterialToolbar
     private lateinit var moviePoster: ImageView
     private lateinit var reviewList: RecyclerView
     private lateinit var carouselPoster: RecyclerView
     private lateinit var actorslist: RecyclerView
-    private lateinit var shortDescription: TextView
+    private lateinit var shortDescriptionText: TextView
     private lateinit var fullDescription: TextView
     private lateinit var seasonAndSeries: TextView
-    private lateinit var ageRating: TextView
-    private lateinit var NoInfoActorsCard: MaterialCardView
-    private lateinit var NoInfoReviewCard: MaterialCardView
-    private lateinit var NoInfoImageCard: MaterialCardView
+    private lateinit var ageRatingText: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,144 +73,125 @@ class MovieScreenActivity : AppCompatActivity() {
         reviewList = findViewById(R.id.reviewList)
         carouselPoster = findViewById(R.id.carouselPoster)
         actorslist = findViewById(R.id.actorslist)
-        shortDescription = findViewById(R.id.shortDescription)
-        ageRating = findViewById(R.id.ageRating)
-        NoInfoActorsCard = findViewById(R.id.NoInfoActorsCard)
-        NoInfoReviewCard = findViewById(R.id.NoInfoReviewCard)
-        NoInfoImageCard = findViewById(R.id.NoInfoImageCard)
+        shortDescriptionText = findViewById(R.id.shortDescription)
+        ageRatingText = findViewById(R.id.ageRating)
+
+        actorsTextView = findViewById(R.id.actors)
+        reviewsTextView = findViewById(R.id.review)
+        postersTextView = findViewById(R.id.image)
 
         val layoutManager = GridLayoutManager(this, 3, GridLayoutManager.HORIZONTAL, false)
         actorslist.layoutManager = layoutManager
 
         carouselPoster.layoutManager = CarouselLayoutManager(HeroCarouselStrategy())
-        val snapHelper = CarouselSnapHelper()
-        snapHelper.attachToRecyclerView(carouselPoster)
-        val snapHelper1 = LinearSnapHelper()
-        snapHelper1.attachToRecyclerView(reviewList)
+        CarouselSnapHelper().attachToRecyclerView(carouselPoster)
+        LinearSnapHelper().attachToRecyclerView(reviewList)
 
         val adapterReview = ReviewAdapter(::showBottomSheet)
         val adapterPoster = PosterAdapter()
         val adapterPerson = PersonAdapter()
         carouselPoster.adapter = adapterPoster
         actorslist.adapter = adapterPerson
-
         reviewList.adapter = adapterReview
         reviewList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val intent = intent
-        val id = intent.getIntExtra("EXTRA_ID", -1)
-        Log.i("id", id.toString())
-        val viewModel =
-            ViewModelProvider(
-                this,
-                MovieListViewModelFactory(MovieRepository(ApiService.create()), id)
-            )
-                .get(MovieScreenViewModel::class.java)
 
-        toolBar.setNavigationOnClickListener {
-            finish()
-        }
-        Log.i("person", viewModel.movie.value.toString())
         viewModel.movie.observe(this) { movie ->
-            movieName.text = movie?.name
-            movieCountry.text = movie?.countries?.joinToString { country -> country.name }
-            movieGenre.text = movie?.genres?.joinToString { country -> country.name }
-            if (movie?.rating?.kp == 0.0) {
-                movieRating.text = "Рейтинг формируется"
-            } else {
-                movieRating.text = movie?.rating?.kp.toString()
-            }
-            if (movie?.ageRating == "0") {
-                ageRating.visibility = View.GONE
-            } else {
-                ageRating.text = movie?.ageRating + "+"
-            }
-
-            shortDescription.text = movie?.shortDescription
-            if (movie.description.isNotEmpty()) {
-                fullDescription.setOnClickListener {
-                    val args = Bundle()
-                    args.putString("shortDESCRIPTION", movie?.shortDescription)
-                    args.putString("fullDESCRIPTION", movie?.description)
-                    val fullDescriptionBottomSheet = FullDescriptionBottomSheet()
-                    fullDescriptionBottomSheet.arguments = args
-                    fullDescriptionBottomSheet.show(
-                        supportFragmentManager,
-                        "FullDescriptionBottomSheet"
-                    )
-                }
-            }
-
-            if (movie?.type == "movie") {
-                if (movie.movieLength == 0) {
-                    movieDuration.visibility = View.GONE
+            with(movie ?: return@observe) {
+                movieName.text = name
+                movieCountry.text = countries.joinToString { it.name }
+                movieGenre.text = genres.joinToString { it.name }
+                movieRating.text =
+                    if (rating.kp == 0.0) getString(R.string.rating_formed) else "KP:" + rating.kp.toString()
+                ageRatingText.visibility =
+                    if (ageRating.isNullOrEmpty()) View.GONE else View.VISIBLE
+                ageRatingText.text = ageRating.plus("+")
+                shortDescriptionText.visibility =
+                    if (shortDescription.isNullOrEmpty()) View.GONE else View.VISIBLE
+                shortDescriptionText.text = shortDescription
+                if (!description.isNullOrEmpty()) {
+                    fullDescription.visibility = View.VISIBLE
+                    fullDescription.text = getString(R.string.full_description)
+                    fullDescription.setOnClickListener {
+                        val args = Bundle().apply {
+                            putString("shortDESCRIPTION", shortDescription)
+                            putString("fullDESCRIPTION", description)
+                        }
+                        FullDescriptionBottomSheet().apply {
+                            arguments = args
+                        }.show(supportFragmentManager, "FullDescriptionBottomSheet")
+                    }
                 } else {
-                    movieDuration.text = movie.movieLength.toString() + "мин"
+                    fullDescription.visibility = View.GONE
+                }
+                if (type == "movie") {
+                    movieDuration.visibility = if (movieLength == 0) View.GONE else View.VISIBLE
+                    movieDuration.text = if (movieLength == 0) "" else "$movieLength мин"
                     seasonAndSeries.visibility = View.GONE
-                    movieYear.text = movie.year
-                }
-            } else if (movie?.type == "tv-series") {
-
-                if (movie.seriesLength == "0") {
-                    movieDuration.visibility = View.GONE
-                } else {
-                    movieDuration.text = movie.seriesLength + " мин"
+                    movieYear.text = year
+                } else if (type == "tv-series") {
+                    movieDuration.visibility = if (seriesLength == "0") View.GONE else View.VISIBLE
+                    movieDuration.text = if (seriesLength == "0") "" else "$seriesLength мин"
                     movieYear.text =
-                        movie.releaseYears.joinToString(separator = " - ") { "${it.start} - ${it.end}" }
+                        releaseYears.joinToString(separator = " - ") { "${it.start} - ${it.end}" }
                     seasonAndSeries.visibility = View.VISIBLE
-                    val totalSeasons = movie.seasonsInfo.lastOrNull()?.number ?: 0
+                    val totalSeasons = seasonsInfo.lastOrNull()?.number ?: 0
                     val totalEpisodes =
-                        movie.seasonsInfo.fold(0) { acc, season -> acc + season.episodesCount }
-                    seasonAndSeries.text =
-                        totalSeasons.toSeasonsString() + " " + totalEpisodes.toEpisodesString()
+                        seasonsInfo.fold(0) { acc, season -> acc + season.episodesCount }
+                    seasonAndSeries.text = buildString {
+                        append(totalSeasons.toSeasonsString())
+                        append("\n")
+                        append(totalEpisodes.toEpisodesString())
+                    }
                 }
-            }
 
+                toolBar.title = name
+                if (poster.url != null) {
+                    Picasso.get().load(poster.url).resize(300, 450)
+                        .transform(RoundedCornerTransformation())
+                        .placeholder(R.drawable.stub).error(R.drawable.stub)
+                        .into(moviePoster)
+                } else {
+                    moviePoster.setImageResource(R.drawable.stub)
+                }
 
-//            fullDescription.text = movie?.description
-
-            toolBar.title = movie?.name
-            if (movie?.poster?.url != null) {
-                Picasso.get()
-                    .load(movie.poster.url)
-                    .resize(300, 450)
-                    .transform(RoundedCornerTransformation())
-                    .placeholder(R.drawable.download_icon) // Заглушка, отображаемая во время загрузки
-                    .error(R.drawable.stub) // Заглушка, отображаемая при ошибке загрузки ВРЕМЕННАЯ
-                    .into(moviePoster)
-            } else {
-                moviePoster.setImageResource(R.drawable.stub)
-            }
-
-            val actors = movie.persons.filter { it.enProfession == "actor" }
-            if (actors.isEmpty()) {
-                actorslist.visibility = View.GONE
-                NoInfoActorsCard.visibility = View.VISIBLE
-            } else {
-                adapterPerson.submitList(actors)
+                val actors = persons.filter { it.enProfession == "actor" }
+                if (actors.isEmpty()) {
+                    actorsTextView.text = getString(R.string.no_actor_information)
+                    actorslist.visibility = View.GONE
+                } else {
+                    actorsTextView.text = getString(R.string.actors)
+                    adapterPerson.submitList(actors)
+                }
             }
         }
 
         viewModel.reviews.observe(this) { pagingData ->
             adapterReview.submitData(lifecycle, pagingData)
-//            if (reviewList.isEmpty()) {
-//                reviewList.visibility = View.GONE
-//                NoInfoReviewCard.visibility = View.VISIBLE
-//
-//            } else {
-//                reviewList.visibility = View.VISIBLE
-//                NoInfoReviewCard.visibility = View.GONE
-//            }
+            adapterReview.addLoadStateListener { loadState ->
+                if (loadState.source.refresh is LoadState.NotLoading && adapterReview.itemCount == 0) {
+                    reviewList.visibility = View.GONE
+                    reviewsTextView.text = getString(R.string.no_review_information)
+                } else {
+                    reviewList.visibility = View.VISIBLE
+                    reviewsTextView.text = getString(R.string.reviews)
+                }
+            }
         }
 
         viewModel.posters.observe(this) { pagingData ->
             adapterPoster.submitData(lifecycle, pagingData)
-//            if (reviewList.isEmpty()) {
-//                carouselPoster.visibility = View.GONE
-//                NoInfoImageCard.visibility = View.VISIBLE
-//            } else {
-//                carouselPoster.visibility = View.VISIBLE
-//                NoInfoImageCard.visibility = View.GONE
-//            }
+            adapterPoster.addLoadStateListener { loadState ->
+                if (loadState.source.refresh is LoadState.NotLoading && adapterPoster.itemCount == 0) {
+                    carouselPoster.visibility = View.GONE
+                    postersTextView.text = getString(R.string.no_image_information)
+                } else {
+                    carouselPoster.visibility = View.VISIBLE
+                    postersTextView.text = getString(R.string.images)
+                }
+            }
+        }
+        toolBar.setNavigationOnClickListener {
+            finish()
         }
     }
 
@@ -248,7 +230,6 @@ class MovieScreenActivity : AppCompatActivity() {
         args.putString("title", title)
         args.putString("review", review)
         bottomSheetDialog.arguments = args
-
         bottomSheetDialog.show(supportFragmentManager, "FullReviewBottomSheet")
     }
 }

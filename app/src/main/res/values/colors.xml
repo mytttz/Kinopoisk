@@ -1,4 +1,7 @@
 <resources>
+    <color name="positive_green">#03FC0F</color>
+    <color name="neutral_gray">#8E8E8E</color>
+    <color name="negative_red">#E80000</color>
     <color name="md_theme_primary">#8B4F25</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#FFDBC8</color>

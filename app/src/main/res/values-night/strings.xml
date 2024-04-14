@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kinopoisk</string>
     <string name="rating_formed">Рейтинг формируется</string>
     <string name="full_description">Полное описание</string>
     <string name="no_actor_information">Не найдено информации об актерах</string>

@@ -24,15 +24,14 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/arrow_back_icon"
-                app:title="MOVIE_NAME" />
+                app:navigationIcon="@drawable/arrow_back_icon" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <ImageView
             android:id="@+id/moviePoster"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="126dp"
+            android:layout_height="168dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +63,7 @@
             android:layout_marginEnd="32dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/md_theme_onSurfaceVariant"
+            android:textColor="@color/md_theme_onSurface"
             android:textSize="20sp"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/moviePoster"
@@ -93,10 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="@color/md_theme_onSurfaceVariant"
+            android:textColor="@color/md_theme_onSurface"
             android:textSize="16sp"
-            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/movieDuration"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movieGenre"
@@ -117,39 +114,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/NoInfoImageCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
-                <TextView
-                    android:id="@+id/NoInfoImage"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:text="Нет информации об изображениях"
-                    android:textColor="@color/md_theme_onSurface"
-                    android:textSize="24sp"
-                    app:layout_constrainedWidth="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/actorslist"
@@ -159,40 +123,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/actors" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/NoInfoActorsCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/actors">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
-                <TextView
-                    android:id="@+id/NoInfoActors"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:text="Нет информации об актерах"
-                    android:textColor="@color/md_theme_onSurface"
-                    android:textSize="24sp"
-                    app:layout_constrainedWidth="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -206,40 +136,6 @@
             app:layout_constraintTop_toBottomOf="@+id/review"
             tools:layout_editor_absoluteX="178dp" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/NoInfoReviewCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/review">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
-                <TextView
-                    android:id="@+id/NoInfoReview"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:text="Нет информации об отзывах"
-                    android:textColor="@color/md_theme_onSurface"
-                    android:textSize="24sp"
-                    app:layout_constrainedWidth="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
         <TextView
             android:id="@+id/movieGenre"
             android:layout_width="0dp"
@@ -247,8 +143,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
-
-            android:textColor="@color/md_theme_onSurfaceVariant"
+            android:textColor="@color/md_theme_onSurface"
             android:textSize="16sp"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/moviePoster"
@@ -260,11 +155,9 @@
             android:id="@+id/movieDuration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/md_theme_onSurfaceVariant"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/md_theme_onSurface"
             android:textSize="16sp"
-            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="@id/movieRating"
             app:layout_constraintEnd_toStartOf="@+id/ageRating"
             app:layout_constraintStart_toEndOf="@id/movieRating"
@@ -278,9 +171,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/md_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movieRating"
+            app:layout_constraintTop_toBottomOf="@+id/seasonAndSeries"
             tools:text="короткое описание" />
 
         <TextView
@@ -289,19 +183,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/design_default_color_primary_dark"
+            android:textColor="@color/md_theme_primary"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shortDescription"
-            android:text="Полное описание" />
+            tools:text="Полное описание" />
 
         <TextView
             android:id="@+id/seasonAndSeries"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="@color/md_theme_onSurface"
             app:layout_constraintEnd_toEndOf="@+id/moviePoster"
             app:layout_constraintStart_toStartOf="@+id/moviePoster"
-            app:layout_constraintTop_toBottomOf="@+id/moviePoster"
+            app:layout_constraintTop_toBottomOf="@+id/ageRating"
             tools:text="кол-во сезонов и серий" />
 
         <TextView
@@ -310,9 +206,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Отзывы"
+            android:textColor="@color/md_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/actorslist" />
+            app:layout_constraintTop_toBottomOf="@+id/actorslist"
+            tools:text="Отзывы" />
 
         <TextView
             android:id="@+id/actors"
@@ -320,9 +217,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Актеры"
+            android:textColor="@color/md_theme_onSurface"
+
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/fullDescription"
+            tools:text="Актеры" />
 
         <TextView
             android:id="@+id/image"
@@ -330,9 +229,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Изображения"
+            android:textColor="@color/md_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewList" />
+            app:layout_constraintTop_toBottomOf="@+id/reviewList"
+            tools:text="Изображения" />
 
         <TextView
             android:id="@+id/ageRating"
@@ -340,11 +240,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="32dp"
-            android:ellipsize="end"
-            android:maxLines="1"
+
             android:textColor="@color/md_theme_onSurfaceVariant"
             android:textSize="16sp"
-            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="@+id/movieDuration"
             app:layout_constraintEnd_toStartOf="@+id/moviePoster"
             app:layout_constraintStart_toEndOf="@+id/movieDuration"
